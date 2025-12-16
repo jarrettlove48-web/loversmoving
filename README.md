@@ -24,8 +24,8 @@ vercel
 1. In Vercel dashboard, go to your project → Settings → Domains
 2. Add your domain (e.g., loversmoving.com)
 3. Update your domain's DNS:
-   - Add an A record pointing to `76.76.21.21`
-   - Or add a CNAME record pointing to `cname.vercel-dns.com`
+   - Recommended: Add a CNAME record pointing to `cname.vercel-dns.com`
+   - Or follow Vercel's instructions in the dashboard for A record configuration
 
 ---
 
@@ -132,7 +132,7 @@ Before going live, make sure you've:
 - [ ] Deployed to Vercel
 - [ ] Connected your custom domain
 - [ ] Created Cal.com account and event type
-- [ ] Replaced `YOUR_CAL_USERNAME` in index.html (2 places)
+- [ ] Replaced `YOUR_CAL_USERNAME` in index.html (4 places)
 - [ ] Created HubSpot account
 - [ ] Created HubSpot form with custom fields
 - [ ] Replaced `YOUR_HUBSPOT_ID` in index.html
