@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lovers Moving | Elite Ground Transportation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Mobile Responsiveness -->
+    <style>
+        @media (max-width: 768px) {
+            body {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+            .nav-container {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .fleet-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .cta-content {
+                text-align: center;
+            }
+        }
+    </style>
+
+    <!-- Weekly/Tour Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    toggleButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    // Show market rates dynamically
+                    const marketRates = document.querySelector('.market-rates');
+                    marketRates.innerHTML = button.dataset.rateDescription || 'No rates available';
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Weekly &amp; Tour Services</h1>
+                <p>Toggle between Weekly and Tour to view our rates.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Toggle Section -->
+    <div class="quote-form-container">
+        <div class="booking-toggle">
+            <button class="toggle-btn active" data-rate-description="Weekly Rates: $100 - $300">Weekly</button>
+            <button class="toggle-btn" data-rate-description="Tour Rates: $500 - $1200">Tour</button>
+        </div>
+        <div class="market-rates">
+            Weekly Rates: $100 - $300
+        </div>
+    </div>
+
+    <!-- Add other relevant page sections here -->
+</body>
+</html>
