@@ -44,6 +44,9 @@
 
         html {
             scroll-behavior: smooth;
+            /* Prevent text size adjustment on orientation change */
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
         }
 
         body {
@@ -54,6 +57,22 @@
             overflow-x: hidden;
             overflow-y: auto;
             line-height: 1.6;
+            /* Improve scrolling on iOS */
+            -webkit-overflow-scrolling: touch;
+            /* Improve font rendering */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Touch-friendly interactive elements */
+        button, a, input, select, textarea {
+            -webkit-tap-highlight-color: rgba(232, 228, 221, 0.2);
+        }
+
+        /* Ensure touch targets are at least 44x44px for accessibility */
+        button, .nav-btn, .mobile-menu-btn, .toggle-btn {
+            min-height: 44px;
+            cursor: pointer;
         }
 
         .font-display {
@@ -275,6 +294,9 @@
             color: var(--text-primary);
             cursor: pointer;
             padding: 0.5rem;
+            /* Touch-friendly sizing */
+            min-height: 44px;
+            min-width: 44px;
         }
 
         /* Hero Section */
@@ -551,6 +573,10 @@
             font-size: 0.95rem;
             font-family: inherit;
             transition: all 0.3s ease;
+            /* Touch-friendly sizing */
+            min-height: 48px;
+            /* Prevent zoom on iOS */
+            font-size: max(16px, 0.95rem);
         }
 
         .form-group input::placeholder {
@@ -583,6 +609,8 @@
             font-family: inherit;
             position: relative;
             overflow: hidden;
+            /* Touch-friendly sizing */
+            min-height: 52px;
         }
 
         .submit-btn::before {
@@ -1216,6 +1244,43 @@
             .logo-bar {
                 flex-wrap: wrap;
                 gap: 2rem;
+            }
+
+            /* Improve touch spacing on mobile */
+            .nav-container {
+                padding: 0 1.5rem;
+            }
+
+            .section-container {
+                padding: 0 1.5rem;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 2rem;
+                line-height: 1.1;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .section-container {
+                padding: 0 1rem;
+            }
+
+            .quote-form-container {
+                padding: 1.25rem;
+            }
+
+            /* Ensure buttons remain touch-friendly even on small screens */
+            .submit-btn,
+            .toggle-btn,
+            .nav-btn {
+                padding: 0.875rem 1.25rem;
+                font-size: 0.95rem;
             }
         }
 
