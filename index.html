@@ -33,7 +33,7 @@
         }
 
         /* Ensure touch targets are at least 44x44px for accessibility */
-        button, a {
+        button {
             min-height: 44px;
             min-width: 44px;
             cursor: pointer;
@@ -94,8 +94,6 @@
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1rem;
             transition: all 0.3s ease;
-            /* Touch-friendly sizing - WCAG minimum */
-            min-height: 44px;
         }
 
         .toggle-btn.active {
@@ -204,11 +202,6 @@
     <!-- Weekly/Tour Functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Lucide icons
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-
             const toggleButtons = document.querySelectorAll('.toggle-btn');
 
             toggleButtons.forEach(button => {
