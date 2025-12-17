@@ -9,11 +9,16 @@
     
     <!-- Mobile Responsiveness -->
     <style>
-        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            /* Prevent text size adjustment on orientation change */
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
         }
 
         body {
@@ -23,10 +28,12 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            /* Improve scrolling on iOS */
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Ensure touch targets are at least 44x44px for accessibility */
-        button, a, .toggle-btn {
+        button, a {
             min-height: 44px;
             min-width: 44px;
             cursor: pointer;
@@ -87,8 +94,8 @@
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1rem;
             transition: all 0.3s ease;
-            /* Touch-friendly sizing */
-            min-height: 48px;
+            /* Touch-friendly sizing - WCAG minimum */
+            min-height: 44px;
         }
 
         .toggle-btn.active {
@@ -197,17 +204,6 @@
                 padding: 1rem;
                 font-size: 0.95rem;
             }
-        }
-
-        /* Prevent text size adjustment on orientation change */
-        html {
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-        }
-
-        /* Improve scrolling on iOS */
-        body {
-            -webkit-overflow-scrolling: touch;
         }
     </style>
 
