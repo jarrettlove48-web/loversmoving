@@ -1,244 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lovers Moving | Elite Ground Transportation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Lovers Moving | Elite Ground Transportation</title>
+      <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+      <script src="https://unpkg.com/lucide@latest"></script>
+      
+      <!-- HubSpot Tracking -->
+      <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hsforms.net/forms/shell/v2.js"></script>
+      
+      <!-- Mobile Responsiveness -->
+      <style>
+              * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+              }
+
+              html {
+                        /* Prevent text size adjustment on orientation change */
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+              }
+
+              body {
+                        font-family: 'Space Grotesk', sans-serif;
+                        background-color: #0a0a0a;
+                        color: #ffffff;
+                        line-height: 1.6;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        /* Improve scrolling on iOS */
+                        -webkit-overflow-scrolling: touch;
+              }
+
+              /* Ensure touch targets are at least 44x44px for accessibility */
+              button {
+                        min-height: 44px;
+                        min-width: 44px;
+                        cursor: pointer;
+                        -webkit-tap-highlight-color: rgba(232, 228, 221, 0.2);
+              }
+
+              .hero {
+                        padding: 2rem 1rem;
+                        min-height: 50vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+              }
+
+              .hero-content {
+                        max-width: 1200px;
+                        width: 100%;
+                        margin: 0 auto;
+                        padding: 2rem;
+              }
+
+              .hero-text h1 {
+                        font-family: 'Syne', sans-serif;
+                        font-size: clamp(2rem, 5vw, 3.5rem);
+                        margin-bottom: 1rem;
+                        line-height: 1.2;
+              }
+
+              .hero-text p {
+                        font-size: clamp(1rem, 2vw, 1.25rem);
+                        color: rgba(255, 255, 255, 0.8);
+                        margin-bottom: 2rem;
+              }
+
+              .quote-form-container {
+                        max-width: 600px;
+                        margin: 2rem auto;
+                        padding: 2rem;
+                        background: rgba(255, 255, 255, 0.03);
+                        border: 1px solid rgba(255, 255, 255, 0.08);
+                        border-radius: 12px;
+              }
+
+              .booking-toggle {
+                        display: flex;
+                        gap: 1rem;
+                        margin-bottom: 1.5rem;
+                        flex-wrap: wrap;
+              }
+
+              .toggle-btn {
+                        flex: 1;
+                        padding: 1rem;
+                        background: rgba(255, 255, 255, 0.05);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        border-radius: 8px;
+                        color: rgba(255, 255, 255, 0.7);
+                        font-family: 'Space Grotesk', sans-serif;
+                        font-size: 1rem;
+                        transition: all 0.3s ease;
+              }
+
+              .toggle-btn.active {
+                        background: #E8E4DD;
+                        color: #0a0a0a;
+                        border-color: #E8E4DD;
+              }
+
+              .toggle-btn:hover {
+                        background: rgba(255, 255, 255, 0.1);
+              }
+
+              .toggle-btn.active:hover {
+                        background: #E8E4DD;
+              }
+
+              .market-rates {
+                        padding: 1.5rem;
+                        background: rgba(127, 229, 163, 0.1);
+                        border: 1px solid rgba(127, 229, 163, 0.2);
+                        border-radius: 8px;
+                        color: #7FE5A3;
+                        font-size: 1.125rem;
+                        text-align: center;
+                        font-weight: 500;
+              }
+
+              .booking-section {
+                        max-width: 800px;
+                        margin: 3rem auto;
+                        padding: 2rem;
+                        background: rgba(255, 255, 255, 0.03);
+                        border: 1px solid rgba(255, 255, 255, 0.08);
+                        border-radius: 12px;
+              }
+
+              .booking-section h2 {
+                        font-family: 'Syne', sans-serif;
+                        font-size: 2rem;
+                        margin-bottom: 1.5rem;
+                        text-align: center;
+              }
+
+              .crm-section {
+                        max-width: 700px;
+                        margin: 3rem auto;
+                        padding: 2rem;
+                        background: rgba(255, 255, 255, 0.03);
+                        border: 1px solid rgba(255, 255, 255, 0.08);
+                        border-radius: 12px;
+              }
+
+              .crm-section h2 {
+                        font-family: 'Syne', sans-serif;
+                        font-size: 2rem;
+                        margin-bottom: 1.5rem;
+                        text-align: center;
+              }
+
+              .hs-form-frame {
+                        background: transparent;
+                        border: none;
+              }
+
+              /* Mobile Responsive - Tablet */
+              @media (max-width: 1024px) {
+                        .hero-content {
+                                    padding: 1.5rem;
+                        }
+
+                        .quote-form-container {
+                                    padding: 1.5rem;
+                        }
+
+                        .booking-section,
+                        .crm-section {
+                                    padding: 1.5rem;
+                        }
+              }
+
+              /* Mobile Responsive - Phone */
+              @media (max-width: 768px) {
+                        .hero {
+                                    padding: 1rem;
+                                    min-height: auto;
+                        }
+
+                        .hero-content {
+                                    padding: 1rem;
+                                    text-align: center;
+                        }
+
+                        .hero-text h1 {
+                                    font-size: clamp(1.75rem, 6vw, 2.5rem);
+                                    margin-bottom: 0.75rem;
+                        }
+
+                        .hero-text p {
+                                    font-size: 1rem;
+                                    margin-bottom: 1.5rem;
+                        }
+
+                        .quote-form-container {
+                                    padding: 1.25rem;
+                                    margin: 1rem;
+                        }
+
+                        .booking-toggle {
+                                    flex-direction: column;
+                                    gap: 0.75rem;
+                        }
+
+                        .toggle-btn {
+                                    width: 100%;
+                                    padding: 0.875rem;
+                                    font-size: 0.95rem;
+                        }
+
+                        .market-rates {
+                                    padding: 1.25rem;
+                                    font-size: 1rem;
+                        }
+
+                        .booking-section,
+                        .crm-section {
+                                    padding: 1.25rem;
+                                    margin: 1.5rem 1rem;
+                        }
+
+                        .booking-section h2,
+                        .crm-section h2 {
+                                    font-size: 1.5rem;
+                        }
+              }
+
+              /* Mobile Responsive - Small Phone */
+              @media (max-width: 480px) {
+                        .hero-text h1 {
+                                    font-size: 1.75rem;
+                        }
+
+                        .quote-form-container {
+                                    padding: 1rem;
+                                    margin: 0.5rem;
+                        }
+
+                        .toggle-btn {
+                                    padding: 0.75rem;
+                                    font-size: 0.9rem;
+                        }
+
+                        .market-rates {
+                                    padding: 1rem;
+                                    font-size: 0.95rem;
+                        }
+
+                        .booking-section,
+                        .crm-section {
+                                    padding: 1rem;
+                                    margin: 1rem 0.5rem;
+                        }
+
+                        .booking-section h2,
+                        .crm-section h2 {
+                                    font-size: 1.25rem;
+                        }
+              }
+            </style>
+
+          <!-- Weekly/Tour Functionality -->
+          <script>
+                  document.addEventListener('DOMContentLoaded', () => {
+                            const toggleButtons = document.querySelectorAll('.toggle-btn');
+
+                            toggleButtons.forEach(button => {
+                                        button.addEventListener('click', () => {
+                                                      toggleButtons.forEach(btn => btn.classList.remove('active'));
+                                                      button.classList.add('active');
+
+                                                      // Show market rates dynamically
+                                                      const marketRates = document.querySelector('.market-rates');
+                                                      marketRates.innerHTML = button.dataset.rateDescription || 'No rates available';
+                                        });
+                            });
+                  });
+          </script>
+    </head>
+    <body>
+          <!-- Hero Section -->
+          <section class="hero">
+                  <div class="hero-content">
+                            <div class="hero-text">
+                                        <h1>Elite Ground Transportation Services</h1>
+                                    <p>Professional booking and consultation management powered by Cal.com and HubSpot CRM.</p>
+                            </div>div>
+                  </div>div>
+          </section>section>
     
-    <!-- Mobile Responsiveness -->
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      <!-- Booking Toggle Section -->
+      <div class="quote-form-container">
+          <div class="booking-toggle">
+                <button class="toggle-btn active" data-rate-description="Weekly Rates: $100 - $300">Weekly</button>button>
+                <button class="toggle-btn" data-rate-description="Tour Rates: $500 - $1200">Tour</button>button>
+          </div>div>
+          <div class="market-rates">
+                Weekly Rates: $100 - $300
+          </div>div>
+      </div>div>
+    
+      <!-- Cal.com Booking Section -->
+      <div class="booking-section">
+          <h2>Schedule Your Consultation</h2>
+          <p style="text-align: center; margin-bottom: 1.5rem; color: rgba(255, 255, 255, 0.8);">
+                    Book your transportation consultation directly with us. Choose a time that works best for you.
+          </p>
+              <iframe src="https://cal.com/jarrett-love-pcvohq/consultation?embed=true" style="border:none;outline:none;width:100%;height:500px;"></iframe>iframe>
+      </div>div>
 
-        html {
-            /* Prevent text size adjustment on orientation change */
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-        }
+          <!-- HubSpot CRM Lead Capture Section -->
+          <div class="crm-section">
+                  <h2>Get Your Quote Today</h2>
+                  <p style="text-align: center; margin-bottom: 1.5rem; color: rgba(255, 255, 255, 0.8);">
+                            Fill out the form below to receive a personalized quote and join our mailing list for special offers.
+                  </p>
+                  <script src="https://js-na2.hsforms.net/forms/embed/244657858.js" defer></script>
+                  <div class="hs-form-frame" data-region="na2" data-form-id="f1d38fe9-ce3d-4f17-a0e1-4b7d6f40baa6" data-portal-id="244657858"></div>div>
+          </div>div>
 
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background-color: #0a0a0a;
-            color: #ffffff;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            /* Improve scrolling on iOS */
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* Ensure touch targets are at least 44x44px for accessibility */
-        button {
-            min-height: 44px;
-            min-width: 44px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: rgba(232, 228, 221, 0.2);
-        }
-
-        .hero {
-            padding: 2rem 1rem;
-            min-height: 50vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .hero-text h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero-text p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 2rem;
-        }
-
-        .quote-form-container {
-            max-width: 600px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-        }
-
-        .booking-toggle {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .toggle-btn {
-            flex: 1;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.7);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-btn.active {
-            background: #E8E4DD;
-            color: #0a0a0a;
-            border-color: #E8E4DD;
-        }
-
-        .toggle-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .toggle-btn.active:hover {
-            background: #E8E4DD;
-        }
-
-        .market-rates {
-            padding: 1.5rem;
-            background: rgba(127, 229, 163, 0.1);
-            border: 1px solid rgba(127, 229, 163, 0.2);
-            border-radius: 8px;
-            color: #7FE5A3;
-            font-size: 1.125rem;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        /* Mobile Responsive - Tablet */
-        @media (max-width: 1024px) {
-            .hero-content {
-                padding: 1.5rem;
-            }
-
-            .quote-form-container {
-                padding: 1.5rem;
-            }
-        }
-
-        /* Mobile Responsive - Phone */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 1rem;
-                min-height: auto;
-            }
-
-            .hero-content {
-                padding: 1rem;
-                text-align: center;
-            }
-
-            .hero-text h1 {
-                font-size: clamp(1.75rem, 6vw, 2.5rem);
-                margin-bottom: 0.75rem;
-            }
-
-            .hero-text p {
-                font-size: 1rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .quote-form-container {
-                padding: 1.25rem;
-                margin: 1rem;
-            }
-
-            .booking-toggle {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .toggle-btn {
-                width: 100%;
-                padding: 0.875rem;
-                font-size: 0.95rem;
-            }
-
-            .market-rates {
-                padding: 1.25rem;
-                font-size: 1rem;
-            }
-        }
-
-        /* Mobile Responsive - Small Phone */
-        @media (max-width: 480px) {
-            .hero-text h1 {
-                font-size: 1.75rem;
-            }
-
-            .quote-form-container {
-                padding: 1rem;
-                margin: 0.5rem;
-            }
-
-            .toggle-btn {
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
-
-            .market-rates {
-                padding: 1rem;
-                font-size: 0.95rem;
-            }
-        }
-    </style>
-
-    <!-- Weekly/Tour Functionality -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const toggleButtons = document.querySelectorAll('.toggle-btn');
-
-            toggleButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    toggleButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-
-                    // Show market rates dynamically
-                    const marketRates = document.querySelector('.market-rates');
-                    marketRates.innerHTML = button.dataset.rateDescription || 'No rates available';
-                });
-            });
-        });
-    </script>
-</head>
-<body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Weekly &amp; Tour Services</h1>
-                <p>Toggle between Weekly and Tour to view our rates.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Booking Toggle Section -->
-    <div class="quote-form-container">
-        <div class="booking-toggle">
-            <button class="toggle-btn active" data-rate-description="Weekly Rates: $100 - $300">Weekly</button>
-            <button class="toggle-btn" data-rate-description="Tour Rates: $500 - $1200">Tour</button>
-        </div>
-        <div class="market-rates">
-            Weekly Rates: $100 - $300
-        </div>
-    </div>
-
-    <!-- Add other relevant page sections here -->
-</body>
-</html>
+          <!-- Footer Section -->
+          <footer style="text-align: center; padding: 2rem 1rem; margin-top: 3rem; border-top: 1px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6);">
+                  <p>&copy; 2025 Lovers Moving. All rights reserved. Powered by Cal.com and HubSpot CRM.</p>
+          </footer>footer>
+    </body>
+</html>html></p>
+          </p></h1>
+    </body>
+          </script>
+      </style></title>
+    </head>
