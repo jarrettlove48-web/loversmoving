@@ -1254,6 +1254,42 @@
             .section-container {
                 padding: 0 1.5rem;
             }
+
+            /* Pricing table mobile improvements */
+            .pricing-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .pricing-table thead,
+            .pricing-table tbody,
+            .pricing-table tr {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            .pricing-table th,
+            .pricing-table td {
+                padding: 1rem;
+                font-size: 0.875rem;
+                white-space: nowrap;
+            }
+
+            .pricing-table th:first-child,
+            .pricing-table td:first-child {
+                min-width: 140px;
+            }
+
+            .pricing-table th:nth-child(2),
+            .pricing-table td:nth-child(2),
+            .pricing-table th:nth-child(3),
+            .pricing-table td:nth-child(3),
+            .pricing-table th:last-child,
+            .pricing-table td:last-child {
+                min-width: 90px;
+            }
         }
 
         /* Small mobile devices */
@@ -1281,6 +1317,27 @@
             .nav-btn {
                 padding: 0.875rem 1.25rem;
                 font-size: 0.95rem;
+            }
+
+            /* Pricing table for small devices */
+            .pricing-table th,
+            .pricing-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .pricing-table th:first-child,
+            .pricing-table td:first-child {
+                min-width: 120px;
+            }
+
+            .pricing-table th:nth-child(2),
+            .pricing-table td:nth-child(2),
+            .pricing-table th:nth-child(3),
+            .pricing-table td:nth-child(3),
+            .pricing-table th:last-child,
+            .pricing-table td:last-child {
+                min-width: 80px;
             }
         }
 
@@ -1370,7 +1427,7 @@
             <div class="hero-text">
                 <div class="hero-badge">Elite Private Transportation</div>
                 <h1 class="font-display">
-                    Security that moves<br>with <span class="highlight">Precision</span>
+                    Transportation that moves<br>with <span class="highlight">Precision</span>
                 </h1>
                 <p>
                     Elevate your travel with executive ground transportation designed for athletes, entertainers, and leaders who demand absolute discretion.
