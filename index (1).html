@@ -18,9 +18,9 @@
         "layout": "month_view"
       });
     </script>
-    
-    <!-- HubSpot Tracking Code - Replace YOUR_HUBSPOT_ID with your actual HubSpot Portal ID -->
-    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/YOUR_HUBSPOT_ID.js"></script>
+
+    <!-- HubSpot Tracking Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/244657858.js"></script>
     <style>
         :root {
             --accent: #E8E4DD;
@@ -648,6 +648,80 @@
             font-size: 0.75rem;
             color: var(--text-dim);
             margin-top: 1.25rem;
+        }
+
+        /* Pricing Estimate Styles */
+        .pricing-estimate {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(232, 228, 221, 0.05) 0%, rgba(127, 229, 163, 0.05) 100%);
+            border: 1px solid rgba(127, 229, 163, 0.2);
+            border-radius: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .estimate-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .estimate-header i {
+            width: 18px;
+            height: 18px;
+        }
+
+        .estimate-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .estimate-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .estimate-row:last-child {
+            border-bottom: none;
+        }
+
+        .estimate-row span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .estimate-row strong {
+            font-size: 1rem;
+        }
+
+        .savings-row {
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(127, 229, 163, 0.2);
+            margin-top: 0.25rem;
+        }
+
+        .savings-row strong {
+            font-size: 1.1rem;
+            font-weight: 700;
         }
 
         /* Section Styles */
@@ -1401,7 +1475,7 @@
                 <a href="#fleet">Fleet</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#contact">Contact</a>
-                <button class="nav-btn" data-cal-namespace="consultation" data-cal-link="YOUR_CAL_USERNAME/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
+                <button class="nav-btn" data-cal-namespace="consultation" data-cal-link="jarrett-love-pcvohq/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
                     <i data-lucide="calendar"></i>
                     Book Now
                 </button>
@@ -1414,7 +1488,7 @@
             <a href="#fleet">Fleet</a>
             <a href="#pricing">Pricing</a>
             <a href="#contact">Contact</a>
-            <button class="nav-btn" data-cal-namespace="consultation" data-cal-link="YOUR_CAL_USERNAME/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
+            <button class="nav-btn" data-cal-namespace="consultation" data-cal-link="jarrett-love-pcvohq/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
                 <i data-lucide="calendar"></i>
                 Book Now
             </button>
@@ -1491,12 +1565,46 @@
 
                     <div class="form-grid">
                         <div class="form-group">
-                            <label><i data-lucide="calendar"></i>Date</label>
-                            <input type="date" name="service_date" required>
+                            <label><i data-lucide="calendar"></i>Pickup Date</label>
+                            <input type="date" name="pickup_date" id="pickup-date" required onchange="calculatePricing()">
                         </div>
                         <div class="form-group">
-                            <label><i data-lucide="clock"></i>Time</label>
-                            <input type="time" name="service_time" required>
+                            <label><i data-lucide="calendar"></i>Drop-off Date</label>
+                            <input type="date" name="dropoff_date" id="dropoff-date" required onchange="calculatePricing()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i data-lucide="clock"></i>Pickup Time</label>
+                        <input type="time" name="service_time" required>
+                    </div>
+
+                    <div id="pricing-estimate" class="pricing-estimate" style="display:none;">
+                        <div class="estimate-header">
+                            <i data-lucide="calculator"></i>
+                            <span>Estimated Pricing</span>
+                        </div>
+                        <div class="estimate-details">
+                            <div class="estimate-row">
+                                <span>Duration:</span>
+                                <strong id="duration-days">0 days</strong>
+                            </div>
+                            <div class="estimate-row">
+                                <span>Service Type:</span>
+                                <strong id="service-type">Daily</strong>
+                            </div>
+                            <div class="estimate-row">
+                                <span>Estimated Rate:</span>
+                                <strong id="estimated-rate" style="color: var(--accent);">$0</strong>
+                            </div>
+                            <div class="estimate-row">
+                                <span>Market Rate:</span>
+                                <strong id="market-rate" style="color: var(--text-dim);">$0</strong>
+                            </div>
+                            <div class="estimate-row savings-row">
+                                <span>Your Savings:</span>
+                                <strong id="savings-amount" style="color: var(--success);">$0 (0%)</strong>
+                            </div>
                         </div>
                     </div>
 
@@ -1734,7 +1842,7 @@
             <div class="cta-content">
                 <h2 class="font-display">Ready for <span class="highlight">Discretion</span>?</h2>
                 <p>Join athletes, entertainers, and executives who trust Lovers Moving for uncompromising premium service.</p>
-                <button class="cta-btn" data-cal-namespace="consultation" data-cal-link="YOUR_CAL_USERNAME/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
+                <button class="cta-btn" data-cal-namespace="consultation" data-cal-link="jarrett-love-pcvohq/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
                     Schedule Consultation
                     <i data-lucide="arrow-right"></i>
                 </button>
@@ -1792,6 +1900,88 @@
             document.getElementById('daily-btn').classList.toggle('active', type === 'daily');
             document.getElementById('weekly-btn').classList.toggle('active', type === 'weekly');
             document.getElementById('savings-badge').classList.toggle('show', type === 'weekly');
+            calculatePricing(); // Recalculate when booking type changes
+        }
+
+        function calculatePricing() {
+            const pickupDate = document.getElementById('pickup-date').value;
+            const dropoffDate = document.getElementById('dropoff-date').value;
+            const pricingEstimate = document.getElementById('pricing-estimate');
+
+            if (!pickupDate || !dropoffDate) {
+                pricingEstimate.style.display = 'none';
+                return;
+            }
+
+            const pickup = new Date(pickupDate);
+            const dropoff = new Date(dropoffDate);
+            const days = Math.ceil((dropoff - pickup) / (1000 * 60 * 60 * 24)) + 1; // Include both start and end day
+
+            if (days < 1) {
+                pricingEstimate.style.display = 'none';
+                alert('Drop-off date must be after pickup date');
+                return;
+            }
+
+            // Pricing structure based on your table
+            const pricing = {
+                single: { lovers: 850, market: 900 },
+                weekly: { lovers: 4900, market: 6300 },
+                monthly: { lovers: 19500, market: 25500 },
+                tour_90: { lovers: 54000, market: 74700 }
+            };
+
+            let loversRate, marketRate, serviceType;
+
+            if (days === 1) {
+                loversRate = pricing.single.lovers;
+                marketRate = pricing.single.market;
+                serviceType = 'Single Day (8 hours)';
+            } else if (days >= 2 && days <= 6) {
+                // Daily rate calculation for 2-6 days
+                loversRate = pricing.single.lovers * days;
+                marketRate = pricing.single.market * days;
+                serviceType = `${days} Days`;
+            } else if (days === 7) {
+                loversRate = pricing.weekly.lovers;
+                marketRate = pricing.weekly.market;
+                serviceType = 'Weekly (7 days)';
+            } else if (days >= 8 && days <= 29) {
+                // Weekly rate extrapolation
+                const weeks = Math.ceil(days / 7);
+                loversRate = pricing.weekly.lovers * weeks;
+                marketRate = pricing.weekly.market * weeks;
+                serviceType = `${days} Days (~${weeks} weeks)`;
+            } else if (days >= 30 && days <= 89) {
+                // Monthly calculation
+                const months = Math.ceil(days / 30);
+                loversRate = pricing.monthly.lovers * months;
+                marketRate = pricing.monthly.market * months;
+                serviceType = `Monthly Tour (${days} days)`;
+            } else {
+                // 90+ days
+                const months = Math.ceil(days / 30);
+                loversRate = pricing.tour_90.lovers * Math.ceil(days / 90);
+                marketRate = pricing.tour_90.market * Math.ceil(days / 90);
+                serviceType = `Extended Tour (${days} days)`;
+            }
+
+            const savings = marketRate - loversRate;
+            const savingsPercent = Math.round((savings / marketRate) * 100);
+
+            // Update UI
+            document.getElementById('duration-days').textContent = `${days} day${days > 1 ? 's' : ''}`;
+            document.getElementById('service-type').textContent = serviceType;
+            document.getElementById('estimated-rate').textContent = `$${loversRate.toLocaleString()}`;
+            document.getElementById('market-rate').textContent = `$${marketRate.toLocaleString()}`;
+            document.getElementById('savings-amount').textContent = `$${savings.toLocaleString()} (${savingsPercent}%)`;
+
+            pricingEstimate.style.display = 'block';
+
+            // Reinitialize icons for the calculator icon
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         }
 
         function toggleMobileMenu() {
@@ -1805,7 +1995,7 @@
             const data = Object.fromEntries(formData.entries());
             data.booking_type = bookingType;
             
-            // Submit to HubSpot (replace YOUR_PORTAL_ID and YOUR_FORM_GUID with actual values)
+            // Submit to HubSpot
             const hubspotData = {
                 fields: [
                     { name: "firstname", value: data.first_name },
@@ -1814,7 +2004,8 @@
                     { name: "phone", value: data.phone },
                     { name: "pickup_location", value: data.pickup_location },
                     { name: "dropoff_location", value: data.dropoff_location },
-                    { name: "service_date", value: data.service_date },
+                    { name: "pickup_date", value: data.pickup_date },
+                    { name: "dropoff_date", value: data.dropoff_date },
                     { name: "service_time", value: data.service_time },
                     { name: "booking_type", value: data.booking_type }
                 ],
@@ -1827,7 +2018,7 @@
             try {
                 // HubSpot Form Submission API
                 const response = await fetch(
-                    'https://api.hsforms.com/submissions/v3/integration/submit/YOUR_PORTAL_ID/YOUR_FORM_GUID',
+                    'https://api.hsforms.com/submissions/v3/integration/submit/244657858/f1d38fe9-ce3d-4f17-a0e1-4b7d6f40baa6',
                     {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1860,7 +2051,7 @@
                     <p style="margin-top: 1rem; color: var(--text-muted);">Want to schedule a consultation call now?</p>
                     <div class="success-buttons">
                         <button class="success-btn secondary" onclick="closeSuccessModal()">I'll Wait for the Quote</button>
-                        <button class="success-btn primary" data-cal-namespace="consultation" data-cal-link="YOUR_CAL_USERNAME/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
+                        <button class="success-btn primary" data-cal-namespace="consultation" data-cal-link="jarrett-love-pcvohq/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
                             Schedule Call Now
                         </button>
                     </div>
