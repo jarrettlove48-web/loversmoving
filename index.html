@@ -2158,7 +2158,7 @@
             const data = Object.fromEntries(formData.entries());
             data.booking_type = bookingType;
             
-            // Generate quote summary for HubSpot description field
+            // Generate quote summary for HubSpot name field
             const quoteSummary = generateQuoteSummary(data);
             
             // Submit to HubSpot API
@@ -2177,7 +2177,7 @@
                     { name: "service_type", value: data.service_type },
                     { name: "booking_type", value: data.booking_type },
                     { name: "additional_comments", value: data.additional_comments || '' },
-                    { name: "description", value: quoteSummary }
+                    { name: "name", value: quoteSummary }
                 ],
                 context: {
                     pageUri: window.location.href,
