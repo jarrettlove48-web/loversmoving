@@ -24,11 +24,11 @@
                         -ms-text-size-adjust: 100%;
               }
 
-              body {
-                        font-family: 'Space Grotesk', sans-serif;
-                        background-color: #0a0a0a;
-                        color: #ffffff;
-                        line-height: 1.6;
+               body {
+                         font-family: 'Space Grotesk', sans-serif;
+                         background-color: #0a0a0a;
+                         color: #ffffff;
+                         line-height: 1.6;
                         -webkit-font-smoothing: antialiased;
                         -moz-osx-font-smoothing: grayscale;
                         /* Improve scrolling on iOS */
@@ -38,16 +38,122 @@
               /* Ensure touch targets are at least 44x44px for accessibility */
               button {
                         min-height: 44px;
-                        min-width: 44px;
-                        cursor: pointer;
-                        -webkit-tap-highlight-color: rgba(232, 228, 221, 0.2);
+                         min-width: 44px;
+                         cursor: pointer;
+                         -webkit-tap-highlight-color: rgba(232, 228, 221, 0.2);
+               }
+
+              /* Fleet Section */
+              #fleet {
+                        padding: 5rem 1rem;
+                        background: #0A0A0A;
+              }
+
+              .fleet-container {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding: 0 1rem;
+              }
+
+              .fleet-header {
+                        text-align: center;
+                        margin-bottom: 3rem;
+              }
+
+              .fleet-header h3 {
+                        font-family: 'Syne', sans-serif;
+                        font-size: clamp(2rem, 4vw, 2.75rem);
+                        margin-bottom: 0.75rem;
+              }
+
+              .fleet-header span {
+                        color: #D4AF37;
+              }
+
+              .fleet-header p {
+                        color: #B8B8B8;
+                        max-width: 720px;
+                        margin: 0 auto;
+              }
+
+              .fleet-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                        gap: 2rem;
+              }
+
+              .fleet-card {
+                        background: #1A1A1A;
+                        border: 1px solid #2A2A2A;
+                        border-radius: 14px;
+                        overflow: hidden;
+                        transition: border-color 0.3s ease;
+              }
+
+              .fleet-card:hover {
+                        border-color: #D4AF37;
+              }
+
+              .fleet-image {
+                        height: 16rem;
+                        overflow: hidden;
+              }
+
+              .fleet-image img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        transition: transform 0.5s ease;
+              }
+
+              .fleet-card:hover .fleet-image img {
+                        transform: scale(1.05);
+              }
+
+              .fleet-content {
+                        padding: 1.5rem;
+              }
+
+              .fleet-content h4 {
+                        font-family: 'Syne', sans-serif;
+                        font-size: 1.5rem;
+                        margin-bottom: 1rem;
+                        transition: color 0.3s ease;
+              }
+
+              .fleet-card:hover .fleet-content h4 {
+                        color: #D4AF37;
+              }
+
+              .fleet-feature {
+                        display: flex;
+                        align-items: center;
+                        color: #B8B8B8;
+                        font-size: 0.95rem;
+                        margin-bottom: 0.6rem;
+              }
+
+              .fleet-feature i {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-right: 0.75rem;
+                        width: 16px;
+                        height: 16px;
+                        color: #D4AF37;
+              }
+
+              .fleet-caption {
+                        font-size: 0.8rem;
+                        color: #666;
+                        margin-top: 1rem;
               }
 
               .hero {
-                        padding: 2rem 1rem;
-                        min-height: 50vh;
-                        display: flex;
-                        align-items: center;
+                         padding: 2rem 1rem;
+                         min-height: 50vh;
+                         display: flex;
+                         align-items: center;
                         justify-content: center;
               }
 
@@ -281,20 +387,188 @@
                                                       marketRates.innerHTML = button.dataset.rateDescription || 'No rates available';
                                         });
                             });
+
+                            if (window.lucide && typeof lucide.createIcons === 'function') {
+                                      lucide.createIcons();
+                            }
                   });
           </script>
     </head>
     <body>
           <!-- Hero Section -->
-          <section class="hero">
-                  <div class="hero-content">
-                            <div class="hero-text">
-                                        <h1>Elite Ground Transportation Services</h1>
-                                    <p>Professional booking and consultation management powered by Cal.com and HubSpot CRM.</p>
-                            </div>
+           <section class="hero">
+                   <div class="hero-content">
+                             <div class="hero-text">
+                                         <h1>Elite Ground Transportation Services</h1>
+                                     <p>Professional booking and consultation management powered by Cal.com and HubSpot CRM.</p>
+                             </div>
+                   </div>
+           </section>
+
+      <!-- The Fleet Section -->
+      <section id="fleet">
+        <div class="fleet-container">
+          <div class="fleet-header">
+            <h3 class="font-serif text-4xl mb-4">
+              The <span>Fleet</span>
+            </h3>
+            <p>
+              Meticulously maintained, all-black luxury SUVs equipped for maximum security and comfort
+            </p>
+          </div>
+
+          <div class="fleet-grid">
+            <!-- Fleet Item 1 - Cadillac Escalade -->
+            <div class="fleet-card">
+              <div class="fleet-image">
+                <img 
+                  src="escalade.png"
+                  alt="Cadillac Escalade ESV with professional chauffeur"
+                  onerror="this.onerror=null;this.src='https://via.placeholder.com/800x400?text=Cadillac+Escalade';"
+                />
+              </div>
+              <div class="fleet-content">
+                <h4>
+                  Cadillac Escalade ESV
+                </h4>
+                <div class="space-y-2 text-sm text-[#B8B8B8] mb-4">
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Ballistic Protection Options (B4/B6)</span>
                   </div>
-          </section>
-    
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Encrypted Wi-Fi &amp; Communications</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Privacy Partition Walls</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Run-flat Tires &amp; Reinforced Chassis</span>
+                  </div>
+                </div>
+                <p class="fleet-caption">
+                  Capacity: Up to 6 passengers • Extended wheelbase for maximum legroom
+                </p>
+              </div>
+            </div>
+
+            <!-- Fleet Item 2 - Lincoln Navigator -->
+            <div class="fleet-card">
+              <div class="fleet-image">
+                <img 
+                  src="navigator.png"
+                  alt="Lincoln Navigator L in private hangar"
+                  onerror="this.onerror=null;this.src='https://via.placeholder.com/800x400?text=Lincoln+Navigator';"
+                />
+              </div>
+              <div class="fleet-content">
+                <h4>
+                  Lincoln Navigator L
+                </h4>
+                <div class="space-y-2 text-sm text-[#B8B8B8] mb-4">
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Executive Interior Package</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Advanced Driver Monitoring Systems</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Tinted Ballistic Glass</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Premium Sound Insulation</span>
+                  </div>
+                </div>
+                <p class="fleet-caption">
+                  Capacity: Up to 7 passengers • Perfect for touring musicians and entertainment professionals
+                </p>
+              </div>
+            </div>
+
+            <!-- Fleet Item 3 - Mercedes S-Class -->
+            <div class="fleet-card">
+              <div class="fleet-image">
+                <img 
+                  src="s-class.png"
+                  alt="Mercedes-Benz S-Class with executive chauffeur"
+                  onerror="this.onerror=null;this.src='https://via.placeholder.com/800x400?text=Mercedes+S-Class';"
+                />
+              </div>
+              <div class="fleet-content">
+                <h4>
+                  Mercedes-Benz S-Class
+                </h4>
+                <div class="space-y-2 text-sm text-[#B8B8B8] mb-4">
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Armored Protection Available</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Executive Rear Seating Package</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Privacy Glass &amp; Curtains</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Chauffeur Package with Massage Seats</span>
+                  </div>
+                </div>
+                <p class="fleet-caption">
+                  Capacity: Up to 4 passengers • Ultimate luxury for executive transport
+                </p>
+              </div>
+            </div>
+
+            <!-- Fleet Item 4 - Mercedes Sprinter Van -->
+            <div class="fleet-card">
+              <div class="fleet-image">
+                <img 
+                  src="sprinter.png"
+                  alt="Executive Mercedes Sprinter Van"
+                  onerror="this.onerror=null;this.src='https://via.placeholder.com/800x400?text=Executive+Sprinter+Van';"
+                />
+              </div>
+              <div class="fleet-content">
+                <h4>
+                  Executive Sprinter Van
+                </h4>
+                <div class="space-y-2 text-sm text-[#B8B8B8] mb-4">
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Leather Captain's Chairs</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Conference Table Setup</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Premium Entertainment System</span>
+                  </div>
+                  <div class="fleet-feature">
+                    <i data-lucide="shield"></i>
+                    <span>Panoramic Skylight</span>
+                  </div>
+                </div>
+                <p class="fleet-caption">
+                  Capacity: Up to 10 passengers • Perfect for team transport and band tours
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Booking Toggle Section -->
       <div class="quote-form-container">
           <div class="booking-toggle">
