@@ -1383,6 +1383,152 @@
             color: var(--accent);
         }
 
+        /* Reserve Now / Stripe Section */
+        .reserve-now-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .reserve-now-info {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .reserve-now-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .reserve-now-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+        }
+
+        .reserve-now-info p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .reserve-now-btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--success) 0%, #5fd48a 100%);
+            border: none;
+            border-radius: 12px;
+            color: var(--black);
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .reserve-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(127, 229, 163, 0.4);
+        }
+
+        .reserve-now-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .reserve-now-btn-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-align: left;
+        }
+
+        .reserve-now-btn-content svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .reserve-now-btn-content span {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reserve-now-btn-content strong {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .reserve-now-btn-content small {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .reserve-now-btn > svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .reserve-now-btn:hover > svg {
+            transform: translateX(4px);
+        }
+
+        .stripe-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        .stripe-badge svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .modal-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .modal-divider::before,
+        .modal-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--card-border);
+        }
+
+        .modal-divider span {
+            padding: 0 1rem;
+        }
+
+        .success-icon.payment-success {
+            background: linear-gradient(135deg, var(--success) 0%, #5fd48a 100%);
+        }
+
+        /* Spin animation for loading */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 1024px) {
             .hero-content {
@@ -2197,7 +2343,8 @@
                     showSuccessModal(data);
                     e.target.reset();
                     document.getElementById('quote-preview').style.display = 'none';
-                    currentQuote = null;
+                    // Note: currentQuote is NOT reset here so it's available for Stripe checkout
+                    // It will be reset when the modal is closed
                 } else {
                     console.error('HubSpot error details:', responseData);
                     throw new Error('Submission failed');
@@ -2214,8 +2361,12 @@
         function showSuccessModal(data) {
             const q = currentQuote;
             let quoteHtml = '';
+            let stripeButtonHtml = '';
             
             if (q && q.items.length > 0) {
+                const depositAmount = (q.total / 2).toLocaleString();
+                const remainingAmount = (q.total / 2).toLocaleString();
+                
                 quoteHtml = `
                     <div class="modal-quote">
                         <div class="modal-quote-header">Your Personalized Quote</div>
@@ -2237,6 +2388,32 @@
                         </div>
                     </div>
                 `;
+                
+                stripeButtonHtml = `
+                    <div class="reserve-now-section">
+                        <div class="reserve-now-info">
+                            <div class="reserve-now-title">
+                                <i data-lucide="credit-card"></i>
+                                Reserve Your Booking
+                            </div>
+                            <p>Secure your vehicles now with a 50% deposit. The remaining balance is due on your drop-off date.</p>
+                        </div>
+                        <button class="reserve-now-btn" onclick="initiateStripeCheckout(${q.total}, '${data.email}', '${data.first_name} ${data.last_name}')">
+                            <span class="reserve-now-btn-content">
+                                <i data-lucide="lock"></i>
+                                <span>
+                                    <strong>Pay 50% Deposit Now</strong>
+                                    <small>$${depositAmount} today • $${remainingAmount} on drop-off</small>
+                                </span>
+                            </span>
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                        <div class="stripe-badge">
+                            <i data-lucide="shield-check"></i>
+                            Secured by Stripe • 256-bit encryption
+                        </div>
+                    </div>
+                `;
             }
             
             const modal = document.createElement('div');
@@ -2247,11 +2424,15 @@
                     <h3>Quote Request Received!</h3>
                     <p>Thanks ${data.first_name}! We'll confirm your quote within 2 hours.</p>
                     ${quoteHtml}
-                    <p style="margin-top: 1.5rem; color: var(--text-muted);">Want to schedule a consultation call now?</p>
+                    ${stripeButtonHtml}
+                    <div class="modal-divider">
+                        <span>or</span>
+                    </div>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Prefer to wait or have questions?</p>
                     <div class="success-buttons">
                         <button class="success-btn secondary" onclick="closeSuccessModal()">I'll Wait for Confirmation</button>
                         <button class="success-btn primary" data-cal-namespace="consultation" data-cal-link="jarrett-love-pcvohq/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
-                            Schedule Call Now
+                            Schedule Call
                         </button>
                     </div>
                 </div>
@@ -2263,15 +2444,108 @@
                 if (e.target === modal) closeSuccessModal();
             });
             
-            // Reinitialize Cal.com for the new button
+            // Reinitialize icons and Cal.com
+            lucide.createIcons();
             if (window.Cal) {
                 Cal.ns.consultation("ui", {"theme": "dark", "styles": {"branding": {"brandColor": "#E8E4DD"}}});
             }
         }
 
+        // Stripe Checkout Integration
+        const STRIPE_WORKER_URL = 'https://stripe-checkout.jarrettlove48.workers.dev';
+        
+        async function initiateStripeCheckout(totalAmount, customerEmail, customerName) {
+            const btn = event.target.closest('.reserve-now-btn');
+            const originalContent = btn.innerHTML;
+            
+            // Show loading state
+            btn.disabled = true;
+            btn.innerHTML = `
+                <span class="reserve-now-btn-content">
+                    <i data-lucide="loader-2" class="spin"></i>
+                    <span>Creating secure checkout...</span>
+                </span>
+            `;
+            lucide.createIcons();
+            
+            try {
+                const q = currentQuote;
+                const quoteDetails = q.items.map(item => `${item.name}: $${item.price}`).join(', ');
+                
+                const response = await fetch(STRIPE_WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: totalAmount,
+                        customerEmail: customerEmail,
+                        customerName: customerName,
+                        quoteDetails: quoteDetails,
+                        successUrl: window.location.origin + '/?payment=success',
+                        cancelUrl: window.location.origin + '/?payment=cancelled'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Redirect to Stripe Checkout
+                window.location.href = data.checkoutUrl;
+                
+            } catch (error) {
+                console.error('Stripe checkout error:', error);
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+                lucide.createIcons();
+                alert('Unable to create checkout session. Please try again or contact us directly.');
+            }
+        }
+
+        // Check for payment status in URL on page load
+        function checkPaymentStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentStatus = urlParams.get('payment');
+            
+            if (paymentStatus === 'success') {
+                showPaymentSuccessModal();
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else if (paymentStatus === 'cancelled') {
+                // Optionally show a message for cancelled payments
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+        
+        function showPaymentSuccessModal() {
+            const modal = document.createElement('div');
+            modal.className = 'success-modal';
+            modal.innerHTML = `
+                <div class="success-modal-content">
+                    <div class="success-icon payment-success">✓</div>
+                    <h3>Payment Successful!</h3>
+                    <p>Thank you for your deposit. Your booking is now confirmed!</p>
+                    <p style="margin-top: 1rem; color: var(--text-muted);">We'll send a confirmation email shortly with all the details. Our team will reach out to finalize your transportation arrangements.</p>
+                    <div class="success-buttons" style="margin-top: 2rem;">
+                        <button class="success-btn primary" onclick="closeSuccessModal()">Got It!</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeSuccessModal();
+            });
+        }
+        
+        // Run payment check on page load
+        document.addEventListener('DOMContentLoaded', checkPaymentStatus);
+
         function closeSuccessModal() {
             const modal = document.querySelector('.success-modal');
             if (modal) modal.remove();
+            currentQuote = null; // Reset quote when modal is closed
         }
 
         // Navbar scroll effect
