@@ -147,17 +147,15 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            padding: 1.5rem 0;
+            padding: 1.25rem 0;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: visible;
+            overflow: visible !important;
         }
 
         nav.scrolled {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--card-border);
-            padding: 1rem 0;
-            overflow: visible;
+            padding: 0.75rem 0;
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .nav-container {
@@ -167,7 +165,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            overflow: visible;
+            overflow: visible !important;
         }
 
         .logo {
@@ -176,46 +174,46 @@
             font-weight: 700;
             letter-spacing: 0.02em;
             color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            white-space: nowrap;
-            overflow: visible;
-            line-height: 1.6;
-            margin-bottom: -0.2em;
+            text-decoration: none;
         }
         
         .logo span {
-            display: inline-block;
-            padding-bottom: 0.2em;
+            display: inline;
         }
 
         .logo-icon {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             background: var(--accent);
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .logo-icon svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             color: var(--black);
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 2.5rem;
+            gap: 1.25rem;
+            background: #0d0d0d;
+            padding: 6px 6px 6px 20px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            height: 44px;
         }
 
         .nav-links a {
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             font-weight: 500;
             transition: color 0.3s ease;
             position: relative;
@@ -241,39 +239,44 @@
         }
 
         .nav-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
+            padding: 8px 18px;
+            background: rgba(127, 229, 163, 0.2);
+            border: 1px solid rgba(127, 229, 163, 0.4);
             border-radius: 100px;
-            color: var(--text-primary);
+            color: var(--success);
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            backdrop-filter: blur(10px);
+            text-decoration: none;
+            height: 32px;
         }
 
         .nav-btn:hover {
-            background: var(--accent);
-            color: var(--black);
-            border-color: var(--accent);
+            background: rgba(127, 229, 163, 0.35);
+            border-color: rgba(127, 229, 163, 0.6);
+            color: #fff;
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(127, 229, 163, 0.25);
         }
 
         .nav-btn svg {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
         }
 
         .mobile-menu-btn {
             display: none;
-            background: none;
-            border: none;
+            background: #0d0d0d;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             color: var(--text-primary);
             cursor: pointer;
-            padding: 0.5rem;
+            padding: 10px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
         }
 
         /* Hero Section */
@@ -369,6 +372,39 @@
             width: 16px;
             height: 16px;
             color: var(--accent);
+        }
+
+        .hero-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 2.5rem;
+            padding: 1.125rem 2rem;
+            background: var(--accent);
+            color: var(--black);
+            text-decoration: none;
+            border-radius: 100px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(232, 228, 221, 0.3);
+        }
+
+        .hero-cta-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .hero-cta-btn svg:last-child {
+            transition: transform 0.3s ease;
+        }
+
+        .hero-cta-btn:hover svg:last-child {
+            transform: translateX(4px);
         }
 
         /* Scroll indicator */
@@ -1577,6 +1613,11 @@
                 gap: 0.75rem;
             }
 
+            .hero-cta-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
             .footer-grid {
                 grid-template-columns: 1fr;
             }
@@ -1630,6 +1671,10 @@
             width: 100%;
             justify-content: center;
             margin-top: 1rem;
+            height: 44px;
+            background: rgba(127, 229, 163, 0.2);
+            border: 1px solid rgba(127, 229, 163, 0.4);
+            color: var(--success);
         }
     </style>
 </head>
@@ -1642,19 +1687,16 @@
     <nav id="navbar">
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-icon">
-                    <i data-lucide="shield-check"></i>
-                </div>
                 <span>Lovers Moving</span>
             </div>
             <div class="nav-links">
                 <a href="#fleet">Fleet</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#contact">Contact</a>
-                <button class="nav-btn" data-cal-namespace="consultation" data-cal-link="jarrett-love-pcvohq/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
+                <a href="#book" class="nav-btn">
                     <i data-lucide="calendar"></i>
                     Book Now
-                </button>
+                </a>
             </div>
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
                 <i data-lucide="menu" style="width: 24px; height: 24px;"></i>
@@ -1664,10 +1706,10 @@
             <a href="#fleet">Fleet</a>
             <a href="#pricing">Pricing</a>
             <a href="#contact">Contact</a>
-            <button class="nav-btn" data-cal-namespace="consultation" data-cal-link="jarrett-love-pcvohq/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
+            <a href="#book" class="nav-btn">
                 <i data-lucide="calendar"></i>
                 Book Now
-            </button>
+            </a>
         </div>
     </nav>
 
@@ -1692,6 +1734,13 @@
                         <span>Encrypted Communications</span>
                     </div>
                 </div>
+                
+                <a href="#book" class="hero-cta-btn">
+                    <i data-lucide="calendar-check"></i>
+                    Book Now
+                    <i data-lucide="arrow-right"></i>
+                </a>
+                
                 <div class="scroll-indicator">
                     <span>Scroll down</span>
                     <span class="line"></span>
@@ -1701,11 +1750,11 @@
                 </div>
             </div>
 
-            <!-- Quote Form -->
-            <div class="quote-form-container">
+            <!-- Book Now Form -->
+            <div class="quote-form-container" id="book">
                 <div class="form-header">
-                    <h3 class="font-display">Quick Quote</h3>
-                    <p>Compare our rates with market standards</p>
+                    <h3 class="font-display">Reserve Your Ride</h3>
+                    <p>Book now and save up to 29% vs. market rates</p>
                 </div>
 
                 <div class="booking-toggle">
@@ -1827,7 +1876,7 @@
                     </div>
 
                     <button type="submit" class="submit-btn">
-                        Get Instant Quote
+                        Book & Get Instant Quote
                         <i data-lucide="arrow-right"></i>
                     </button>
 
@@ -2256,9 +2305,9 @@
 
         function generateQuoteSummary(data) {
             const q = currentQuote;
-            if (!q) return 'Quick Quote Request - No vehicles selected';
+            if (!q) return 'Booking Request - No vehicles selected';
             
-            let summary = `QUOTE SUMMARY | `;
+            let summary = `BOOKING SUMMARY | `;
             summary += `${data.first_name} ${data.last_name} | `;
             summary += `${data.email} | ${data.phone} | `;
             summary += `Pickup: ${data.pickup_location} | `;
@@ -2369,7 +2418,7 @@
                 
                 quoteHtml = `
                     <div class="modal-quote">
-                        <div class="modal-quote-header">Your Personalized Quote</div>
+                        <div class="modal-quote-header">Your Booking Quote</div>
                         <div class="modal-quote-body">
                             ${q.items.map(item => `
                                 <div class="modal-quote-line">
@@ -2394,7 +2443,7 @@
                         <div class="reserve-now-info">
                             <div class="reserve-now-title">
                                 <i data-lucide="credit-card"></i>
-                                Reserve Your Booking
+                                Confirm Your Booking
                             </div>
                             <p>Secure your vehicles now with a 50% deposit. The remaining balance is due on your drop-off date.</p>
                         </div>
@@ -2421,16 +2470,16 @@
             modal.innerHTML = `
                 <div class="success-modal-content">
                     <div class="success-icon">✓</div>
-                    <h3>Quote Request Received!</h3>
-                    <p>Thanks ${data.first_name}! We'll confirm your quote within 2 hours.</p>
+                    <h3>Booking Request Received!</h3>
+                    <p>Thanks ${data.first_name}! We'll confirm your booking within 2 hours.</p>
                     ${quoteHtml}
                     ${stripeButtonHtml}
                     <div class="modal-divider">
                         <span>or</span>
                     </div>
-                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Prefer to wait or have questions?</p>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Have questions before paying?</p>
                     <div class="success-buttons">
-                        <button class="success-btn secondary" onclick="closeSuccessModal()">I'll Wait for Confirmation</button>
+                        <button class="success-btn secondary" onclick="closeSuccessModal()">Pay Later</button>
                         <button class="success-btn primary" data-cal-namespace="consultation" data-cal-link="jarrett-love-pcvohq/consultation" data-cal-config='{"layout":"month_view","theme":"dark"}'>
                             Schedule Call
                         </button>
