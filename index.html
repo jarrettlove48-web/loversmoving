@@ -2357,7 +2357,7 @@
             console.log('Quote Summary being sent:', quoteSummary);
             console.log('Current Quote Object:', currentQuote);
             
-            // Submit to HubSpot API
+            // Submit to HubSpot API (creates Contact)
             const hubspotData = {
                 fields: [
                     { name: "firstname", value: data.first_name },
@@ -2399,6 +2399,41 @@
                 
                 if (response.ok) {
                     lastSubmittedData = data; // Store for Stripe checkout
+                    
+                    // Create Deal in HubSpot via Worker
+                    try {
+                        const q = currentQuote;
+                        const dealResponse = await fetch(STRIPE_WORKER_URL + '/create-deal', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                customerEmail: data.email,
+                                customerName: `${data.first_name} ${data.last_name}`,
+                                pickupLocation: data.pickup_location,
+                                dropoffLocation: data.dropoff_location,
+                                pickupDate: data.service_date,
+                                dropoffDate: data.dropoff_date,
+                                pickupTime: data.pick_up_time,
+                                dropoffTime: data.drop_off_time,
+                                serviceType: data.service_type,
+                                quoteTotal: q ? q.total : 0,
+                                depositAmount: q ? (q.total / 2) : 0,
+                                remainingBalance: q ? (q.total / 2) : 0,
+                                quoteSummary: quoteSummary
+                            })
+                        });
+                        
+                        const dealData = await dealResponse.json();
+                        console.log('Deal created:', dealData);
+                        
+                        if (dealData.dealId) {
+                            lastSubmittedData.hubspotDealId = dealData.dealId;
+                        }
+                    } catch (dealError) {
+                        console.error('Deal creation error:', dealError);
+                        // Continue anyway - payment will still work, just won't update Deal
+                    }
+                    
                     showSuccessModal(data);
                     e.target.reset();
                     document.getElementById('quote-preview').style.display = 'none';
@@ -2551,6 +2586,7 @@
                         pickupTime: formData.pick_up_time || '',
                         dropoffTime: formData.drop_off_time || '',
                         serviceType: formData.service_type || '',
+                        hubspotDealId: formData.hubspotDealId || '',
                         successUrl: window.location.origin + '/?payment=success',
                         cancelUrl: window.location.origin + '/?payment=cancelled'
                     })
