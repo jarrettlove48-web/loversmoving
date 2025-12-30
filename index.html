@@ -2110,38 +2110,29 @@
 
         function generateQuoteSummary(data) {
             const q = currentQuote;
-            if (!q) return 'No vehicles selected';
+            if (!q) return 'Quick Quote Request - No vehicles selected';
             
-            let summary = `QUOTE SUMMARY\n`;
-            summary += `═══════════════════════════════════\n\n`;
-            summary += `Client: ${data.first_name} ${data.last_name}\n`;
-            summary += `Email: ${data.email}\n`;
-            summary += `Phone: ${data.phone}\n\n`;
-            summary += `SERVICE DETAILS\n`;
-            summary += `───────────────────────────────────\n`;
-            summary += `Pickup: ${data.pickup_location}\n`;
-            summary += `Drop-off: ${data.dropoff_location}\n`;
-            summary += `Dates: ${data.service_date} to ${data.dropoff_date}\n`;
-            summary += `Times: ${data.pick_up_time} - ${data.drop_off_time}\n`;
-            summary += `Service Type: ${q.serviceType.charAt(0).toUpperCase() + q.serviceType.slice(1)}\n\n`;
-            summary += `VEHICLES & PRICING\n`;
-            summary += `───────────────────────────────────\n`;
+            let summary = `QUOTE SUMMARY | `;
+            summary += `${data.first_name} ${data.last_name} | `;
+            summary += `${data.email} | ${data.phone} | `;
+            summary += `Pickup: ${data.pickup_location} | `;
+            summary += `Dropoff: ${data.dropoff_location} | `;
+            summary += `Dates: ${data.service_date} to ${data.dropoff_date} | `;
+            summary += `Times: ${data.pick_up_time} - ${data.drop_off_time} | `;
+            summary += `Service: ${q.serviceType.charAt(0).toUpperCase() + q.serviceType.slice(1)} | `;
+            summary += `VEHICLES: `;
             
-            q.items.forEach(item => {
-                summary += `${item.name}: $${item.price.toLocaleString()}\n`;
+            q.items.forEach((item, i) => {
+                summary += `${item.name}: $${item.price.toLocaleString()}`;
+                if (i < q.items.length - 1) summary += ', ';
             });
             
-            summary += `\n───────────────────────────────────\n`;
-            summary += `Market Rate: $${q.marketTotal.toLocaleString()}\n`;
-            summary += `Your Savings: $${q.savings.toLocaleString()} (${q.savingsPercent}% off)\n`;
-            summary += `═══════════════════════════════════\n`;
-            summary += `TOTAL: $${q.total.toLocaleString()}\n`;
-            summary += `═══════════════════════════════════\n`;
+            summary += ` | Market Rate: $${q.marketTotal.toLocaleString()} | `;
+            summary += `Savings: $${q.savings.toLocaleString()} (${q.savingsPercent}% off) | `;
+            summary += `TOTAL: $${q.total.toLocaleString()}`;
             
             if (data.additional_comments) {
-                summary += `\nADDITIONAL NOTES\n`;
-                summary += `───────────────────────────────────\n`;
-                summary += data.additional_comments;
+                summary += ` | Notes: ${data.additional_comments}`;
             }
             
             return summary;
@@ -2158,8 +2149,10 @@
             const data = Object.fromEntries(formData.entries());
             data.booking_type = bookingType;
             
-            // Generate quote summary for HubSpot name field
+            // Generate quote summary for HubSpot company field
             const quoteSummary = generateQuoteSummary(data);
+            console.log('Quote Summary being sent:', quoteSummary);
+            console.log('Current Quote Object:', currentQuote);
             
             // Submit to HubSpot API
             const hubspotData = {
@@ -2186,6 +2179,7 @@
             };
 
             try {
+                console.log('HubSpot data being sent:', JSON.stringify(hubspotData, null, 2));
                 const response = await fetch(
                     'https://api.hsforms.com/submissions/v3/integration/submit/244657858/28dOP6c49Txeg4Ut9b0C6pg41nv7m',
                     {
@@ -2195,12 +2189,17 @@
                     }
                 );
                 
+                const responseData = await response.json().catch(() => null);
+                console.log('HubSpot response status:', response.status);
+                console.log('HubSpot response data:', responseData);
+                
                 if (response.ok) {
                     showSuccessModal(data);
                     e.target.reset();
                     document.getElementById('quote-preview').style.display = 'none';
                     currentQuote = null;
                 } else {
+                    console.error('HubSpot error details:', responseData);
                     throw new Error('Submission failed');
                 }
             } catch (error) {
