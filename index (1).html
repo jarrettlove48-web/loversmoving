@@ -2100,6 +2100,7 @@
 
         let bookingType = 'daily';
         let currentQuote = null;
+        let lastSubmittedData = null; // Store form data for Stripe checkout
 
         // Pricing data
         const pricing = {
@@ -2372,7 +2373,8 @@
                     { name: "service_type", value: data.service_type },
                     { name: "booking_type", value: data.booking_type },
                     { name: "additional_comments", value: data.additional_comments || '' },
-                    { name: "company", value: quoteSummary }
+                    { name: "company", value: quoteSummary },
+                    { name: "payment_status", value: "Quote_Only" }
                 ],
                 context: {
                     pageUri: window.location.href,
@@ -2396,6 +2398,7 @@
                 console.log('HubSpot response data:', responseData);
                 
                 if (response.ok) {
+                    lastSubmittedData = data; // Store for Stripe checkout
                     showSuccessModal(data);
                     e.target.reset();
                     document.getElementById('quote-preview').style.display = 'none';
@@ -2408,6 +2411,7 @@
             } catch (error) {
                 console.error('Form submission error:', error);
                 // Show success for demo purposes - remove in production
+                lastSubmittedData = data; // Store for Stripe checkout
                 showSuccessModal(data);
                 e.target.reset();
                 document.getElementById('quote-preview').style.display = 'none';
@@ -2528,6 +2532,9 @@
                 const q = currentQuote;
                 const quoteDetails = q.items.map(item => `${item.name}: $${item.price}`).join(', ');
                 
+                // Use stored form data
+                const formData = lastSubmittedData || {};
+                
                 const response = await fetch(STRIPE_WORKER_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2535,7 +2542,15 @@
                         amount: totalAmount,
                         customerEmail: customerEmail,
                         customerName: customerName,
+                        customerPhone: formData.phone || '',
                         quoteDetails: quoteDetails,
+                        pickupLocation: formData.pickup_location || '',
+                        dropoffLocation: formData.dropoff_location || '',
+                        pickupDate: formData.service_date || '',
+                        dropoffDate: formData.dropoff_date || '',
+                        pickupTime: formData.pick_up_time || '',
+                        dropoffTime: formData.drop_off_time || '',
+                        serviceType: formData.service_type || '',
                         successUrl: window.location.origin + '/?payment=success',
                         cancelUrl: window.location.origin + '/?payment=cancelled'
                     })
@@ -2546,6 +2561,9 @@
                 if (data.error) {
                     throw new Error(data.error);
                 }
+                
+                // Log Stripe Customer ID for reference
+                console.log('Stripe Customer ID:', data.stripeCustomerId);
                 
                 // Redirect to Stripe Checkout
                 window.location.href = data.checkoutUrl;
@@ -2601,7 +2619,8 @@
         function closeSuccessModal() {
             const modal = document.querySelector('.success-modal');
             if (modal) modal.remove();
-            currentQuote = null; // Reset quote when modal is closed
+            currentQuote = null;
+            lastSubmittedData = null;
         }
 
         // Navbar scroll effect
