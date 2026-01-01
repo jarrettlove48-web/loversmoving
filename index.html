@@ -829,6 +829,66 @@
             margin-top: 1.25rem;
         }
 
+        /* Referral Section */
+        .referral-section {
+            margin-top: 1.5rem;
+            border: 1px solid rgba(232, 228, 221, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .referral-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .referral-toggle:hover {
+            background: rgba(232, 228, 221, 0.05);
+            color: var(--accent);
+        }
+
+        .referral-toggle i {
+            width: 18px;
+            height: 18px;
+        }
+
+        .referral-toggle span {
+            flex: 1;
+        }
+
+        .referral-chevron {
+            transition: transform 0.3s ease;
+        }
+
+        .referral-section.open .referral-chevron {
+            transform: rotate(180deg);
+        }
+
+        .referral-fields {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 1.25rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .referral-section.open .referral-fields {
+            max-height: 400px;
+            padding: 1.25rem;
+        }
+
+        .referral-note {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
         /* Section Styles */
         .section {
             position: relative;
@@ -1892,6 +1952,34 @@
                         <textarea name="additional_comments" class="form-textarea" placeholder="Any special requests or requirements..." rows="3"></textarea>
                     </div>
 
+                    <!-- Referral Section -->
+                    <div class="referral-section">
+                        <div class="referral-toggle" onclick="toggleReferral()">
+                            <i data-lucide="gift"></i>
+                            <span>Were you referred by someone?</span>
+                            <i data-lucide="chevron-down" class="referral-chevron"></i>
+                        </div>
+                        <div class="referral-fields" id="referral-fields">
+                            <p class="referral-note">Let us know who referred you so we can thank them!</p>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i data-lucide="user"></i>Referrer's Full Name</label>
+                                    <input type="text" name="referral_name" class="form-input" placeholder="John Smith">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i data-lucide="mail"></i>Referrer's Email</label>
+                                    <input type="email" name="referral_email" class="form-input" placeholder="john@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label><i data-lucide="phone"></i>Referrer's Phone</label>
+                                    <input type="tel" name="referral_phone" class="form-input" placeholder="(555) 555-5555">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <button type="submit" class="submit-btn">
                         Book & Get Instant Quote
                         <i data-lucide="arrow-right"></i>
@@ -2107,6 +2195,14 @@
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
+
+        // Toggle referral section
+        function toggleReferral() {
+            const section = document.querySelector('.referral-section');
+            section.classList.toggle('open');
+            // Re-initialize icons after toggle
+            setTimeout(() => lucide.createIcons(), 100);
+        }
 
         let bookingType = 'daily';
         let currentQuote = null;
@@ -2346,6 +2442,16 @@
             
             if (data.additional_comments) {
                 summary += ` | Notes: ${data.additional_comments}`;
+            }
+            
+            // Add referral info if provided
+            if (data.referral_name || data.referral_email || data.referral_phone) {
+                summary += ` | REFERRED BY: `;
+                const referralParts = [];
+                if (data.referral_name) referralParts.push(data.referral_name);
+                if (data.referral_email) referralParts.push(data.referral_email);
+                if (data.referral_phone) referralParts.push(data.referral_phone);
+                summary += referralParts.join(', ');
             }
             
             return summary;
