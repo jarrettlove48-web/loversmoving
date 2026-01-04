@@ -822,6 +822,18 @@
             transform: translateX(4px);
         }
 
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            pointer-events: none;
+        }
+
+        .submit-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
         .form-footer {
             text-align: center;
             font-size: 0.75rem;
@@ -2199,6 +2211,32 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
+        // Initialize date validation - set minimum date to tomorrow
+        (function initializeDateValidation() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.getFullYear() + '-' +
+                String(tomorrow.getMonth() + 1).padStart(2, '0') + '-' +
+                String(tomorrow.getDate()).padStart(2, '0');
+
+            const pickupDateInput = document.getElementById('pickup-date');
+            const dropoffDateInput = document.getElementById('dropoff-date');
+
+            if (pickupDateInput) {
+                pickupDateInput.setAttribute('min', tomorrowStr);
+            }
+            if (dropoffDateInput) {
+                dropoffDateInput.setAttribute('min', tomorrowStr);
+            }
+
+            // Disable submit button until valid dates are provided
+            const submitBtn = document.querySelector('.submit-btn');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+            }
+        })();
+
         // Toggle referral section
         function toggleReferral() {
             const section = document.querySelector('.referral-section');
@@ -2285,12 +2323,17 @@
             const errorMessage = document.getElementById('booking-error-message');
             const submitBtn = document.querySelector('.submit-btn');
 
+            // Helper to show error and disable button
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorDiv.style.display = 'block';
+                if (submitBtn) submitBtn.disabled = true;
+                lucide.createIcons();
+                return false;
+            }
+
             // Reset error state
             errorDiv.style.display = 'none';
-            if (submitBtn) submitBtn.disabled = false;
-
-            // Check if we have enough data to validate
-            if (!pickupDate) return true;
 
             // Get today's date in local timezone (YYYY-MM-DD format)
             const today = new Date();
@@ -2298,16 +2341,22 @@
                 String(today.getMonth() + 1).padStart(2, '0') + '-' +
                 String(today.getDate()).padStart(2, '0');
 
-            // Rule 1: No same-day bookings
-            if (pickupDate <= todayStr) {
-                errorMessage.textContent = 'Same-day bookings are not available. Please select a pickup date at least one day in advance.';
-                errorDiv.style.display = 'block';
-                if (submitBtn) submitBtn.disabled = true;
-                lucide.createIcons();
-                return false;
+            // Rule 1: No same-day bookings - check immediately when pickup date is selected
+            if (pickupDate && pickupDate <= todayStr) {
+                return showError('Same-day bookings are not available. Please select a pickup date at least one day in advance.');
             }
 
-            // Rule 2: Minimum 4 hours duration (only check if all datetime fields are filled)
+            // Rule 2: Dropoff date must not be in the past or today
+            if (dropoffDate && dropoffDate <= todayStr) {
+                return showError('Drop-off date must be in the future. Please select a valid date.');
+            }
+
+            // Rule 3: Dropoff date must be on or after pickup date
+            if (pickupDate && dropoffDate && dropoffDate < pickupDate) {
+                return showError('Drop-off date cannot be before pickup date.');
+            }
+
+            // Rule 4: Minimum 4 hours duration (check when all datetime fields are filled)
             if (pickupDate && dropoffDate && pickupTime && dropoffTime) {
                 const pickupDateTime = new Date(pickupDate + 'T' + pickupTime);
                 const dropoffDateTime = new Date(dropoffDate + 'T' + dropoffTime);
@@ -2315,14 +2364,16 @@
                 const durationHours = durationMs / (1000 * 60 * 60);
 
                 if (durationHours < 4) {
-                    errorMessage.textContent = 'Minimum booking duration is 4 hours. Please adjust your pickup and drop-off times.';
-                    errorDiv.style.display = 'block';
-                    if (submitBtn) submitBtn.disabled = true;
-                    lucide.createIcons();
-                    return false;
+                    return showError('Minimum booking duration is 4 hours. Please adjust your pickup and drop-off times.');
                 }
+
+                // All validations passed - enable button
+                if (submitBtn) submitBtn.disabled = false;
+                return true;
             }
 
+            // Not all fields filled yet - keep button disabled but don't show error
+            if (submitBtn) submitBtn.disabled = true;
             return true;
         }
 
