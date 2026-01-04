@@ -1878,22 +1878,26 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label><i data-lucide="calendar"></i>Pickup Date</label>
-                            <input type="date" name="service_date" id="pickup-date" required onchange="updateServiceType(); calculateQuote()">
+                            <input type="date" name="service_date" id="pickup-date" required onchange="updateServiceType(); calculateQuote(); validateBooking()">
                         </div>
                         <div class="form-group">
                             <label><i data-lucide="calendar"></i>Drop-off Date</label>
-                            <input type="date" name="dropoff_date" id="dropoff-date" required onchange="updateServiceType(); calculateQuote()">
+                            <input type="date" name="dropoff_date" id="dropoff-date" required onchange="updateServiceType(); calculateQuote(); validateBooking()">
                         </div>
+                    </div>
+                    <div id="booking-validation-error" class="validation-error" style="display: none; color: #e74c3c; background: #fdf2f2; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; border: 1px solid #f5c6cb;">
+                        <i data-lucide="alert-circle" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+                        <span id="booking-error-message"></span>
                     </div>
 
                     <div class="form-grid">
                         <div class="form-group">
                             <label><i data-lucide="clock"></i>Pickup Time</label>
-                            <input type="time" name="pick_up_time" required>
+                            <input type="time" name="pick_up_time" id="pickup-time" required onchange="validateBooking()">
                         </div>
                         <div class="form-group">
                             <label><i data-lucide="clock"></i>Drop-off Time</label>
-                            <input type="time" name="drop_off_time" required>
+                            <input type="time" name="drop_off_time" id="dropoff-time" required onchange="validateBooking()">
                         </div>
                     </div>
 
@@ -2272,6 +2276,56 @@
             calculateQuote();
         }
 
+        function validateBooking() {
+            const pickupDate = document.getElementById('pickup-date').value;
+            const dropoffDate = document.getElementById('dropoff-date').value;
+            const pickupTime = document.getElementById('pickup-time').value;
+            const dropoffTime = document.getElementById('dropoff-time').value;
+            const errorDiv = document.getElementById('booking-validation-error');
+            const errorMessage = document.getElementById('booking-error-message');
+            const submitBtn = document.querySelector('.submit-btn');
+
+            // Reset error state
+            errorDiv.style.display = 'none';
+            if (submitBtn) submitBtn.disabled = false;
+
+            // Check if we have enough data to validate
+            if (!pickupDate) return true;
+
+            // Get today's date in local timezone (YYYY-MM-DD format)
+            const today = new Date();
+            const todayStr = today.getFullYear() + '-' +
+                String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                String(today.getDate()).padStart(2, '0');
+
+            // Rule 1: No same-day bookings
+            if (pickupDate <= todayStr) {
+                errorMessage.textContent = 'Same-day bookings are not available. Please select a pickup date at least one day in advance.';
+                errorDiv.style.display = 'block';
+                if (submitBtn) submitBtn.disabled = true;
+                lucide.createIcons();
+                return false;
+            }
+
+            // Rule 2: Minimum 4 hours duration (only check if all datetime fields are filled)
+            if (pickupDate && dropoffDate && pickupTime && dropoffTime) {
+                const pickupDateTime = new Date(pickupDate + 'T' + pickupTime);
+                const dropoffDateTime = new Date(dropoffDate + 'T' + dropoffTime);
+                const durationMs = dropoffDateTime - pickupDateTime;
+                const durationHours = durationMs / (1000 * 60 * 60);
+
+                if (durationHours < 4) {
+                    errorMessage.textContent = 'Minimum booking duration is 4 hours. Please adjust your pickup and drop-off times.';
+                    errorDiv.style.display = 'block';
+                    if (submitBtn) submitBtn.disabled = true;
+                    lucide.createIcons();
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         function calculateQuote() {
             const sedanCount = parseInt(document.getElementById('sedan-count').value) || 0;
             const sprinterCount = parseInt(document.getElementById('sprinter-count').value) || 0;
@@ -2463,10 +2517,16 @@
 
         async function handleSubmit(e) {
             e.preventDefault();
+
+            // Validate booking rules before submission
+            if (!validateBooking()) {
+                return;
+            }
+
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
             data.booking_type = bookingType;
-            
+
             // Generate quote summary for HubSpot company field
             const quoteSummary = generateQuoteSummary(data);
             console.log('Quote Summary being sent:', quoteSummary);
