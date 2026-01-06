@@ -2768,6 +2768,11 @@
         }
         
         function showPaymentSuccessModal() {
+            // Fire Google Ads conversion event for successful Stripe payment
+            gtag('event', 'conversion_event_purchase_1', {
+                'event_timeout': 2000
+            });
+
             const modal = document.createElement('div');
             modal.className = 'success-modal';
             modal.innerHTML = `
